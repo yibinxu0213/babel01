@@ -1,0 +1,668 @@
+<html><head><base href=".">
+<meta charset="UTF-8">
+<title>&#x8a9e;&#x8a00;&#x7684;&#x4e16;&#x754c;&#x901a;&#x7528;&#x8a9e;</title>
+<style>
+body {
+    background-color: #1a472a;
+    color: #ffffff;
+    font-family: "Microsoft JhengHei", sans-serif;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    margin-top: 30px;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.intro {
+    background: rgba(0,0,0,0.2);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.slideshow-container {
+    position: relative;
+    max-width: 800px;
+    margin: auto;
+    height: 400px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.slide {
+    display: none;
+    padding: 40px;  
+    text-align: center;
+    position: absolute;
+    width: calc(100% - 80px);  
+    height: calc(100% - 80px);  
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.slide h2 {
+    margin-top: 10px;  
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.slide p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.slide.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Added fade animation for slides */
+@keyframes fadeEffect {
+    from {opacity: 0.4}
+    to {opacity: 1}
+}
+
+.fade {
+    animation: fadeEffect 1s;
+}
+
+.language-tree {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    overflow-x: auto;
+    min-height: 1000px;
+}
+
+.tree-node {
+    transition: all 0.3s ease;
+    font-size: 12px;
+}
+
+.tree-node text {
+    dominant-baseline: middle;
+    text-anchor: middle;
+    font-weight: 500;
+}
+
+.tree-connection {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawLine 2s ease forwards;
+    opacity: 0.8;
+}
+
+@keyframes drawLine {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Added dot navigation for slideshow */
+.dot-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active {
+    background-color: #4CAF50;
+}
+
+/* Added prev/next buttons */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.9);
+}
+
+.scrambler-container {
+    background: rgba(0,0,0,0.2);
+    padding: 30px;
+    border-radius: 15px;
+    margin-top: 40px;
+    position: relative;
+}
+
+.translator-container {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    margin: 20px 0;
+}
+
+.input-group {
+    position: relative;
+    z-index: 2;
+}
+
+#textRain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#input-text {
+    width: 100%;
+    height: 150px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    resize: none;
+}
+
+.scramble-btn {
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.scramble-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+}
+
+.scramble-btn:active {
+    transform: translateY(1px);
+}
+
+.crazy-mode {
+    display: none;
+}
+.crazy-mode:hover {
+    display: none;
+}
+.crazy-mode.active {
+    display: none;
+}
+
+#glowContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.glow-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #4CAF50;
+    border-radius: 50%;
+    animation: glow 4s ease;
+}
+
+@keyframes glow {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(var(--moveX), var(--moveY));
+    }
+}
+
+.output-text {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    min-height: 100px;
+    font-size: 18px;
+    line-height: 1.8;
+    word-wrap: break-word;
+    transition: opacity 0.3s ease;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.1);
+}
+
+.colonial-impact {
+    background: rgba(0,0,0,0.2);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 30px 0;
+}
+
+.colonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.colonial-card {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.colonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.colonial-card h3 {
+    color: #4CAF50;
+    margin-top: 0;
+    font-size: 1.2em;
+}
+
+.colonial-card p {
+    margin: 10px 0 0;
+    line-height: 1.5;
+    font-size: 0.95em;
+}
+
+@media (max-width: 768px) {
+    .colonial-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+<div class="content">
+    <h1>巴別塔式的溝通</h1>
+    
+    <div class="intro">
+        <h2>&#x5275;&#x9020;&#x7406;&#x5ff5;</h2>
+        <p>隨著當代科技技術的發達提升，語言似乎找到了逐漸理解他人的跡象。本網頁創作的目的是試圖再度擾亂人類的語言，以各國國家的語言進行亂碼式的語言發展，形成巴別塔神話的混淆及呈現另類的語言展示。</p>
+    </div>
+
+    <div class="slideshow-container">
+        <a class="prev" onclick="changeSlide(-1)">&#x276e;</a>
+        <a class="next" onclick="changeSlide(1)">&#x276f;</a>
+        
+        <div class="slide fade active">
+            <h2>&#x4e16;&#x754c;&#x8a9e;&#x8a00;</h2>
+            <p>&#x4e16;&#x754c;&#x8a9e;&#x8a00;&#x662f;&#x6307;&#x6240;&#x6709;&#x4eba;&#x985e;&#x4f7f;&#x7528;&#x7684;&#x8a9e;&#x8a00;&#xff0c;&#x5305;&#x62ec;&#x81ea;&#x7136;&#x8a9e;&#x8a00;&#x548c;&#x4eba;&#x5de5;&#x8a9e;&#x8a00;&#x3002;&#x5b83;&#x662f;&#x4eba;&#x985e;&#x6e9d;&#x901a;&#x7684;&#x57fa;&#x672c;&#x5de5;&#x5177;&#xff0c;&#x5c0d;&#x65bc;&#x5168;&#x7403;&#x5316;&#x7684;&#x767c;&#x5c55;&#x548c;&#x6587;&#x5316;&#x4ea4;&#x6d41;&#x5177;&#x6709;&#x91cd;&#x8981;&#x610f;&#x7fa9;&#x3002;</p>
+        </div>
+        <div class="slide fade">
+            <h2>&#x8a9e;&#x8a00;&#x5206;&#x985e;</h2>
+            <p>&#x8a9e;&#x8a00;&#x53ef;&#x4ee5;&#x6839;&#x64da;&#x5176;&#x8a9e;&#x6cd5;&#x7d50;&#x69cb;&#x3001;&#x8a5e;&#x532f;&#x548c;&#x767c;&#x97f3;&#x7b49;&#x7279;&#x9ede;&#x9032;&#x884c;&#x5206;&#x985e;&#x3002;&#x4e3b;&#x8981;&#x7684;&#x8a9e;&#x8a00;&#x5206;&#x985e;&#x5305;&#x62ec;&#x5370;&#x6b50;&#x8a9e;&#x7cfb;&#x3001;&#x4e9e;&#x975e;&#x8a9e;&#x7cfb;&#x3001;&#x6771;&#x4e9e;&#x8a9e;&#x7cfb;&#x7b49;&#x3002;</p>
+        </div>
+        <div class="slide fade">
+            <h2>&#x8a9e;&#x8a00;&#x6f14;&#x8b8a;</h2>
+            <p>&#x8a9e;&#x8a00;&#x662f;&#x96a8;&#x8457;&#x6642;&#x9593;&#x7684;&#x63a8;&#x79fb;&#x800c;&#x4e0d;&#x65b7;&#x6f14;&#x8b8a;&#x7684;&#x3002;&#x65b0;&#x7684;&#x8a9e;&#x8a00;&#x4e0d;&#x65b7;&#x51fa;&#x73fe;&#xff0c;&#x800c;&#x820a;&#x7684;&#x8a9e;&#x8a00;&#x4e5f;&#x4e0d;&#x65b7;&#x5730;&#x88ab;&#x6dd8;&#x6c70;&#x3002;&#x9019;&#x500b;&#x904e;&#x7a0b;&#x5c0d;&#x65bc;&#x8a9e;&#x8a00;&#x7684;&#x767c;&#x5c55;&#x548c;&#x6587;&#x5316;&#x7684;&#x50b3;&#x627f;&#x5177;&#x6709;&#x91cd;&#x8981;&#x610f;&#x7fa9;&#x3002;</p>
+        </div>
+        
+        <div class="dot-container">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+        </div>
+    </div>
+
+    <div class="language-tree">
+        <h2>世界語言起源分類</h2>
+        <svg width="100%" height="1000" viewBox="0 0 1200 1000">
+            <!-- Root node -->
+            <circle cx="600" cy="30" r="20" class="tree-node" fill="white"/>
+            <text x="600" y="35" fill="black" text-anchor="middle" font-size="14">&#x4e16;&#x754c;&#x8a9e;&#x8a00;</text>
+
+            <!-- Main branches -->
+            <path d="M600,50 L200,130" class="tree-connection" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M600,50 L600,130" class="tree-connection" stroke="white" stroke-width="2" fill="none"/> 
+            <path d="M600,50 L1000,130" class="tree-connection" stroke="white" stroke-width="2" fill="none"/>
+
+            <!-- Level 1: Main Language Families -->
+            <circle cx="200" cy="130" r="15" class="tree-node" fill="white"/>
+            <circle cx="600" cy="130" r="15" class="tree-node" fill="white"/>
+            <circle cx="1000" cy="130" r="15" class="tree-node" fill="white"/>
+            
+            <text x="200" y="135" fill="black" text-anchor="middle" font-size="12">&#x5370;&#x6b50;&#x8a9e;&#x7cfb;</text>
+            <text x="600" y="135" fill="black" text-anchor="middle" font-size="12">&#x4e9e;&#x975e;&#x8a9e;&#x7cfb;</text>
+            <text x="1000" y="135" fill="black" text-anchor="middle" font-size="12">&#x6771;&#x4e9e;&#x8a9e;&#x7cfb;</text>
+
+            <!-- Indo-European Branches -->
+            <path d="M200,145 L100,230" class="tree-connection" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M200,145 L200,230" class="tree-connection" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M200,145 L300,230" class="tree-connection" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M200,145 L400,230" class="tree-connection" stroke="white" stroke-width="2" fill="none"/>
+
+            <text x="100" y="235" fill="white" text-anchor="middle" font-size="11">&#x65e5;&#x8033;&#x66fc;&#x8a9e;&#x652f;</text>
+            <text x="200" y="235" fill="white" text-anchor="middle" font-size="11">&#x7f85;&#x66fc;&#x8a9e;&#x652f;</text>
+            <text x="300" y="235" fill="white" text-anchor="middle" font-size="11">&#x65af;&#x62c9;&#x592b;&#x8a9e;&#x652f;</text>
+            <text x="400" y="235" fill="white" text-anchor="middle" font-size="11">&#x5370;&#x5ea6;&#x8a9e;&#x652f;</text>
+
+            <!-- Germanic Languages -->
+            <path d="M100,245 L50,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M100,245 L100,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M100,245 L150,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <text x="50" y="335" fill="white" text-anchor="middle" font-size="10">&#x82f1;&#x8a9e;</text>
+            <text x="100" y="335" fill="white" text-anchor="middle" font-size="10">&#x5fb7;&#x8a9e;</text>
+            <text x="150" y="335" fill="white" text-anchor="middle" font-size="10">&#x8377;&#x862d;&#x8a9e;</text>
+
+            <!-- Romance Languages -->
+            <path d="M200,245 L150,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M200,245 L200,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M200,245 L250,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <text x="150" y="335" fill="white" text-anchor="middle" font-size="10">&#x6cd5;&#x8a9e;</text>
+            <text x="200" y="335" fill="white" text-anchor="middle" font-size="10">&#x897f;&#x73ed;&#x7259;&#x8a9e;</text>
+            <text x="250" y="335" fill="white" text-anchor="middle" font-size="10">&#x7fa9;&#x5927;&#x5229;&#x8a9e;</text>
+
+            <!-- Slavic Languages -->
+            <path d="M300,245 L250,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M300,245 L300,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M300,245 L350,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <text x="250" y="335" fill="white" text-anchor="middle" font-size="10">&#x4fc4;&#x8a9e;</text>
+            <text x="300" y="335" fill="white" text-anchor="middle" font-size="10">&#x6ce2;&#x862d;&#x8a9e;</text>
+            <text x="350" y="335" fill="white" text-anchor="middle" font-size="10">&#x6377;&#x514b;&#x8a9e;</text>
+
+            <!-- Afro-Asiatic Languages -->
+            <path d="M600,145 L500,230" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M600,145 L600,230" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M600,145 L700,230" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <text x="500" y="235" fill="white" text-anchor="middle" font-size="11">&#x9583;&#x7c73;&#x7279;&#x8a9e;&#x652f;</text>
+            <text x="600" y="235" fill="white" text-anchor="middle" font-size="11">&#x57c3;&#x53ca;&#x8a9e;&#x652f;</text>
+            <text x="700" y="235" fill="white" text-anchor="middle" font-size="11">&#x67cf;&#x67cf;&#x723e;&#x8a9e;&#x652f;</text>
+
+            <!-- Semitic Languages -->
+            <path d="M500,245 L450,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M500,245 L500,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M500,245 L550,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <text x="450" y="335" fill="white" text-anchor="middle" font-size="10">&#x963f;&#x62c9;&#x4f2f;&#x8a9e;</text>
+            <text x="500" y="335" fill="white" text-anchor="middle" font-size="10">&#x5e0c;&#x4f2f;&#x4f86;&#x8a9e;</text>
+            <text x="550" y="335" fill="white" text-anchor="middle" font-size="10">&#x963f;&#x59c6;&#x54c8;&#x62c9;&#x8a9e;</text>
+
+            <!-- East Asian Languages -->
+            <path d="M1000,145 L900,230" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M1000,145 L1000,230" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M1000,145 L1100,230" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <text x="900" y="235" fill="white" text-anchor="middle" font-size="11">&#x6f22;&#x85cf;&#x8a9e;&#x7cfb;</text>
+            <text x="1000" y="235" fill="white" text-anchor="middle" font-size="11">&#x963f;&#x723e;&#x6cf0;&#x8a9e;&#x7cfb;</text>
+            <text x="1100" y="235" fill="white" text-anchor="middle" font-size="11">&#x5357;&#x5cf6;&#x8a9e;&#x7cfb;</text>
+
+            <!-- Sino-Tibetan Languages -->
+            <path d="M900,245 L850,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M900,245 L900,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M900,245 L950,330" class="tree-connection" stroke="white" stroke-width="1" fill="none"/>
+            <text x="850" y="335" fill="white" text-anchor="middle" font-size="10">&#x6f22;&#x8a9e;</text>
+            <text x="900" y="335" fill="white" text-anchor="middle" font-size="10">&#x85cf;&#x8a9e;</text>
+            <text x="950" y="335" fill="white" text-anchor="middle" font-size="10">&#x7dec;&#x7538;&#x8a9e;</text>
+        </svg>
+    </div>
+
+    <div class="scrambler-container">
+        <h2>世界亂碼翻譯器</h2>
+        <div class="translator-container">
+            <div class="input-group">
+                <textarea id="input-text" placeholder="&#x8acb;&#x8f38;&#x5165;&#x60a8;&#x8981;&#x7ffb;&#x8b6f;&#x7684;&#x6587;&#x5b57;..."></textarea>
+                <button class="scramble-btn" onclick="scrambleAndAnimate()">&#x958b;&#x59cb;&#x7ffb;&#x8b6f;</button>
+            </div>
+            <canvas id="textRain"></canvas>
+            <div id="glowContainer"></div>
+            <div id="output" class="output-text"></div>
+        </div>
+    </div>
+
+    <div class="colonial-impact">
+        <h2>後殖民時期語言</h2>
+        <div class="colonial-grid">
+            <div class="colonial-card">
+                <h3>&#x62c9;&#x4e01;&#x7f8e;&#x6d32;&#x8a9e;&#x8a00;&#x5f71;&#x97ff;</h3>
+                <p>&#x6b96;&#x6c11;&#x8005;&#x5c07;&#x81ea;&#x5df1;&#x7684;&#x8a9e;&#x8a00;&#x548c;&#x6587;&#x5316;&#x5f37;&#x52a0;&#x65bc;&#x88ab;&#x6b96;&#x6c11;&#x5730;&#xff0c;&#x9020;&#x6210;&#x4e86;&#x8a9e;&#x8a00;&#x548c;&#x6587;&#x5316;&#x7684;&#x540c;&#x5316;&#x3002;&#x62c9;&#x4e01;&#x7f8e;&#x6d32;&#x8a9e;&#x8a00;&#x7684;&#x5f62;&#x6210;&#x662f;&#x9019;&#x7a2e;&#x540c;&#x5316;&#x7684;&#x7d50;&#x679c;&#x3002;</p>
+            </div>
+            <div class="colonial-card">
+                <h3>&#x975e;&#x6d32;&#x8a9e;&#x8a00;&#x5f71;&#x97ff;</h3>
+                <p>&#x975e;&#x6d32;&#x8a9e;&#x8a00;&#x7684;&#x5f62;&#x6210;&#x4e5f;&#x662f;&#x6b96;&#x6c11;&#x5730;&#x5316;&#x7684;&#x7d50;&#x679c;&#x3002;&#x5404;&#x7a2e;&#x8a9e;&#x8a00;&#x548c;&#x65b9;&#x8a00;&#x5728;&#x975e;&#x6d32;&#x5927;&#x9678;&#x4e0a;&#x5ee3;&#x6cdb;&#x5206;&#x5e03;&#xff0c;&#x5f62;&#x6210;&#x4e86;&#x8c50;&#x5bcc;&#x591a;&#x5f69;&#x7684;&#x8a9e;&#x8a00;&#x6587;&#x5316;&#x3002;</p>
+            </div>
+            <div class="colonial-card">
+                <h3>&#x8a9e;&#x8a00;&#x878d;&#x5408;</h3>
+                <p>&#x8a9e;&#x8a00;&#x878d;&#x5408;&#x662f;&#x6307;&#x4e0d;&#x540c;&#x8a9e;&#x8a00;&#x4e4b;&#x9593;&#x7684;&#x878d;&#x5408;&#x548c;&#x501f;&#x7528;&#x3002;&#x9019;&#x7a2e;&#x73fe;&#x8c61;&#x5728;&#x6b96;&#x6c11;&#x5730;&#x5316;&#x7684;&#x904e;&#x7a0b;&#x4e2d;&#x975e;&#x5e38;&#x5e38;&#x898b;&#xff0c;&#x5f62;&#x6210;&#x4e86;&#x8a31;&#x591a;&#x65b0;&#x7684;&#x8a9e;&#x8a00;&#x548c;&#x65b9;&#x8a00;&#x3002;</p>
+            </div>
+            <div class="colonial-card">
+                <h3>&#x8a9e;&#x8a00;&#x66ff;&#x4ee3;</h3>
+                <p>&#x8a9e;&#x8a00;&#x66ff;&#x4ee3;&#x662f;&#x6307;&#x4e00;&#x7a2e;&#x8a9e;&#x8a00;&#x88ab;&#x53e6;&#x4e00;&#x7a2e;&#x8a9e;&#x8a00;&#x6240;&#x53d6;&#x4ee3;&#x3002;&#x9019;&#x7a2e;&#x73fe;&#x8c61;&#x5728;&#x6b96;&#x6c11;&#x5730;&#x5316;&#x7684;&#x904e;&#x7a0b;&#x4e2d;&#x4e5f;&#x975e;&#x5e38;&#x5e38;&#x898b;&#xff0c;&#x5c24;&#x5176;&#x662f;&#x5728;&#x8a9e;&#x8a00;&#x63a5;&#x89f8;&#x548c;&#x878d;&#x5408;&#x7684;&#x904e;&#x7a0b;&#x4e2d;&#x3002;</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="languageTreeModal" class="modal">
+    <span class="close-modal">&#xd7;</span>
+    <div class="modal-content">
+        <!-- SVG will be cloned here -->
+    </div>
+</div>
+
+<script>let currentSlideIndex = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+function showSlides(n) {
+  if (n >= slides.length) {
+    currentSlideIndex = 0;
+  }
+  if (n < 0) {
+    currentSlideIndex = slides.length - 1;
+  }
+  slides.forEach(slide => {
+    slide.style.display = "none";
+    slide.classList.remove('active');
+  });
+  dots.forEach(dot => dot.classList.remove('active'));
+  slides[currentSlideIndex].style.display = "block";
+  slides[currentSlideIndex].classList.add('active');
+  dots[currentSlideIndex].classList.add('active');
+}
+function changeSlide(n) {
+  showSlides(currentSlideIndex += n);
+}
+function currentSlide(n) {
+  showSlides(currentSlideIndex = n);
+}
+function autoAdvanceSlides() {
+  changeSlide(1);
+}
+setInterval(autoAdvanceSlides, 5000);
+showSlides(currentSlideIndex);
+const canvas = document.getElementById('textRain');
+const ctx = canvas.getContext('2d');
+let textDrops = [];
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  textDrops = textDrops.filter(drop => {
+    const isAlive = drop.update();
+    if (isAlive) {
+      drop.draw(ctx);
+    }
+    return isAlive;
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+class TextDrop {
+  constructor(x, char) {
+    this.x = x;
+    this.y = 0;
+    this.char = char;
+    this.speed = Math.random() * 3 + 1;
+    this.size = Math.random() * 15 + 12;
+    this.color = `rgba(76, 175, 80, ${Math.random() * 0.5 + 0.5})`;
+    this.rotation = Math.random() * 180;
+    this.rotationSpeed = (Math.random() - 0.5) * 5;
+    this.opacity = 1;
+  }
+  update() {
+    this.y += this.speed;
+    this.rotation += this.rotationSpeed;
+    this.opacity -= 0.005;
+    return this.y < canvas.height && this.opacity > 0;
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation * Math.PI / 180);
+    ctx.font = `${this.size}px "Microsoft JhengHei"`;
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = this.opacity;
+    ctx.fillText(this.char, 0, 0);
+    ctx.restore();
+  }
+}
+function scrambleAndAnimate() {
+  const input = document.getElementById('input-text').value;
+  if (!input.trim()) return;
+  textDrops = [];
+  const languages = {
+    chinese: ['你好', '世界', '語言', '文化', '混淆', '巴別', '塔'],
+    japanese: ['こんにちは', '世界', '言語', '文化', '混乱', '塔'],
+    korean: ['안녕하세요', '세계', '언어', '문화', '혼란', '탑'],
+    thai: ['สวัสดี', 'โลก', 'ภาษา', 'วัฒนธรรม'],
+    arabic: ['مرحبا', 'عالم', 'لغة', 'ثقافة'],
+    hebrew: ['שלום', 'עולם', 'שפה', 'תרבות']
+  };
+  let output = '';
+  let animationDelay = 0;
+  for (let i = 0; i < input.length; i++) {
+    if (input[i] === ' ') {
+      output += ' ';
+      continue;
+    }
+    const randomLang = Object.keys(languages)[Math.floor(Math.random() * Object.keys(languages).length)];
+    const randomWord = languages[randomLang][Math.floor(Math.random() * languages[randomLang].length)];
+    output += randomWord;
+    setTimeout(() => {
+      const x = Math.random() * canvas.width;
+      textDrops.push(new TextDrop(x, randomWord[0]));
+      if (isCrazyMode) {
+        for (let j = 0; j < 3; j++) {
+          const randChar = Object.values(languages)[Math.floor(Math.random() * Object.keys(languages).length)][0];
+          textDrops.push(new TextDrop(x + (Math.random() - 0.5) * 50, randChar));
+        }
+        createGlowDot();
+      }
+    }, animationDelay);
+    animationDelay += 100;
+  }
+  const outputElement = document.getElementById('output');
+  outputElement.style.opacity = '0';
+  setTimeout(() => {
+    outputElement.textContent = output;
+    outputElement.style.opacity = '1';
+  }, 300);
+}
+function createGlowDot() {
+  const dot = document.createElement('div');
+  dot.className = 'glow-dot';
+  const container = document.getElementById('glowContainer');
+  dot.style.left = Math.random() * container.offsetWidth + 'px';
+  dot.style.top = Math.random() * container.offsetHeight + 'px';
+  dot.style.setProperty('--moveX', `${(Math.random() - 0.5) * 200}px`);
+  dot.style.setProperty('--moveY', `${Math.random() * 200}px`);
+  container.appendChild(dot);
+  setTimeout(() => dot.remove(), 4000);
+}
+const treeNodes = document.querySelectorAll('.tree-node');
+treeNodes.forEach(node => {
+  node.addEventListener('mouseover', function () {
+    this.style.cursor = 'pointer';
+  });
+});
+const modal = document.getElementById('languageTreeModal');
+const modalContent = modal.querySelector('.modal-content');
+const closeModal = document.querySelector('.close-modal');
+const languageTree = document.querySelector('.language-tree svg');
+languageTree.addEventListener('click', function () {
+  modal.style.display = 'block';
+  const svgClone = this.cloneNode(true);
+  modalContent.innerHTML = '';
+  modalContent.appendChild(svgClone);
+});
+closeModal.addEventListener('click', function () {
+  modal.style.display = 'none';
+});
+window.addEventListener('click', function (event) {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape' && modal.style.display === 'block') {
+    modal.style.display = 'none';
+  }
+});
+modal.addEventListener('wheel', function (e) {
+  e.stopPropagation();
+});
+const languages = {
+  chinese: ['你好', '世界', '語言', '文化', '混淆'],
+  japanese: ['こんにちは', '世界', '言語', '文化', '混乱'],
+  korean: ['안녕하세요', '세계', '언어', '문화', '혼란'],
+  russian: ['привет', 'мир', 'язык', 'культура', 'путаница'],
+  arabic: ['مرحبا', 'عالم', 'لغة', 'ثقافة', 'ارتباك'],
+  greek: ['γεια', 'κόσμος', 'γλώσσα', 'πολιτισμός', 'σύγχυση']
+};
+function scrambleText() {
+  const input = document.getElementById('input-text').value;
+  let output = '';
+  for (let i = 0; i < input.length; i++) {
+    const randomLang = Object.keys(languages)[Math.floor(Math.random() * Object.keys(languages).length)];
+    const randomWord = languages[randomLang][Math.floor(Math.random() * languages[randomLang].length)];
+    output += randomWord;
+  }
+  document.getElementById('output').innerHTML = output;
+}</script>
+</body>
+</html>
